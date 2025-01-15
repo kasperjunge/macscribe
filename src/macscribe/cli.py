@@ -7,7 +7,7 @@ from macscribe.transcriber import transcribe_audio
 
 app = typer.Typer()
 
-@app.command()
+@app.command(no_args_is_help=True)
 def main(
     url: str = typer.Argument(..., help="URL of an Apple Podcast episode or YouTube video"),
     model: str = typer.Option(
