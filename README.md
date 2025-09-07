@@ -1,11 +1,12 @@
 # Macscribe
 
-Macscribe is a command-line tool for transcribing audio from YouTube videos and Apple Podcast episodes. It downloads the audio, transcribes it using a state-of-the-art ML model, and copies the transcription directly to your clipboard for easy use.
+Macscribe is a command-line tool for transcribing audio from YouTube videos, Apple Podcast episodes, and local audio/video files. It downloads audio from URLs or processes local files, transcribes them using a state-of-the-art ML model, and copies the transcription directly to your clipboard for easy use.
 
 ## Features
 
-- **Multi-Platform Support:** Accepts YouTube and Apple Podcast URLs.
-- **Automated Audio Processing:** Downloads high-quality audio from the provided URL.
+- **Multi-Platform Support:** Accepts YouTube, Apple Podcast, and X URLs.
+- **Local File Support:** Transcribes local audio files (MP3, WAV, FLAC, M4A, OGG, WMA) and video files (MP4, MOV, AVI, MKV, WEBM, M4V, WMV).
+- **Automated Audio Processing:** Downloads high-quality audio from URLs or processes local files directly.
 - **State-of-the-Art Transcription:** Utilizes `mlx-whisper` for accurate and fast transcription.
 - **Clipboard Integration:** Automatically copies the transcript to your clipboard.
 - **Customizable Models:** Option to specify a different Hugging Face model for transcription.
@@ -26,12 +27,12 @@ This will install Macscribe along with its dependencies, including `yt-dlp`, `ml
 Once installed, you can run Macscribe directly from the command line. The basic usage is:
 
 ```bash
-macscribe <URL> [--model MODEL]
+macscribe <INPUT> [--model MODEL]
 ```
 
 **Arguments:**
 
-- `<URL>`: The URL of a YouTube video or an Apple Podcast episode.
+- `<INPUT>`: Either a URL (YouTube, Apple Podcast, X) or path to a local audio/video file.
 - `--model MODEL`: *(Optional)* The Hugging Face model to use for transcription.  
   Defaults to `"mlx-community/whisper-large-v3-mlx"` if not specified.
 
@@ -47,6 +48,18 @@ macscribe <URL> [--model MODEL]
 
    ```bash
    macscribe https://podcasts.apple.com/us/podcast/example-episode-url --model some/alternative-model
+   ```
+
+3. Transcribe a local audio file:
+
+   ```bash
+   macscribe /path/to/your/audio.mp3
+   ```
+
+4. Transcribe a local video file:
+
+   ```bash
+   macscribe /path/to/your/video.mp4
    ```
 
 After transcription, the resulting text is automatically copied to your clipboard.

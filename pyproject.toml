@@ -13,6 +13,12 @@ dependencies = [
     "yt-dlp>=2025.1.12",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-mock>=3.10.0",
+]
+
 [project.scripts]
 macscribe = "macscribe:app"
 
