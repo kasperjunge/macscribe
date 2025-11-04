@@ -10,8 +10,47 @@ permissions:
   contents: read
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check if only docs/README/workflows changed
+        id: check
+        run: |
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Check if any non-docs/README/workflow files were changed
+          NON_DOCS_CHANGED=false
+          while IFS= read -r file; do
+            # Skip if file starts with docs/, .github/workflows/, or is README.md
+            if [[ ! "$file" =~ ^docs/ ]] && [[ ! "$file" =~ ^\.github/workflows/ ]] && [[ ! "$file" =~ ^README\.md$ ]] && [[ ! "$file" =~ ^README\.MD$ ]]; then
+              echo "Non-docs file changed: $file"
+              NON_DOCS_CHANGED=true
+              break
+            fi
+          done <<< "$CHANGED_FILES"
+
+          if [ "$NON_DOCS_CHANGED" = true ]; then
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+            echo "✅ Package code changed, will proceed with publish checks"
+          else
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Only docs/README/workflows changed, skipping publish"
+          fi
+
   test:
     runs-on: ubuntu-latest
+    needs: check-changes
+    if: needs.check-changes.outputs.should_publish == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,6 +73,8 @@ jobs:
 
   version-check:
     runs-on: ubuntu-latest
+    needs: check-changes
+    if: needs.check-changes.outputs.should_publish == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
