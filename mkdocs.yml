@@ -1,0 +1,59 @@
+site_name: Macscribe Documentation
+site_description: A command-line tool for transcribing audio from YouTube videos, Apple Podcast episodes, and local audio/video files
+site_author: Kasper Junge
+repo_url: https://github.com/kasperjunge/macscribe
+repo_name: kasperjunge/macscribe
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quick-start.md
+  - Usage:
+    - Basic Usage: usage/basic-usage.md
+    - Advanced Options: usage/advanced-options.md
+    - Examples: usage/examples.md
+  - API Reference: api-reference.md
+  - Contributing: contributing.md
+  - License: license.md
