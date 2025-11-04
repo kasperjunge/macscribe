@@ -1,51 +1,48 @@
 # Macscribe
 
-Welcome to the Macscribe documentation! Macscribe is a powerful command-line tool for transcribing audio from various sources.
+Transcribe audio from YouTube, podcasts, and local files using Whisper on Apple Silicon.
 
-## What is Macscribe?
+## What It Does
 
-Macscribe is a command-line tool that makes it easy to transcribe audio from YouTube videos, Apple Podcast episodes, X (Twitter) posts, and local audio/video files. It downloads audio from URLs or processes local files, transcribes them using state-of-the-art machine learning models, and copies the transcription directly to your clipboard for easy use.
+Macscribe transcribes YouTube videos, Apple Podcasts, X posts, and local audio/video files. Transcripts are automatically copied to your clipboard and optionally saved to a file.
 
-## Key Features
-
-- **Multi-Platform Support**: Accepts YouTube, Apple Podcast, and X URLs
-- **Local File Support**: Transcribes local audio files (MP3, WAV, FLAC, M4A, OGG, WMA) and video files (MP4, MOV, AVI, MKV, WEBM, M4V, WMV)
-- **Automated Audio Processing**: Downloads high-quality audio from URLs or processes local files directly
-- **State-of-the-Art Transcription**: Utilizes `mlx-whisper` for accurate and fast transcription
-- **Clipboard Integration**: Automatically copies the transcript to your clipboard
-- **Customizable Models**: Option to specify a different Hugging Face model for transcription
-- **Simple CLI Interface**: Easy-to-use command-line interface built with Typer
-
-## Quick Example
+## Quick Start
 
 ```bash
-# Transcribe a YouTube video
-macscribe https://www.youtube.com/watch?v=dQw4w9WgXcQ
+# Install
+pip install macscribe
 
-# Transcribe a local audio file
-macscribe /path/to/your/audio.mp3
-
-# Use a custom model
-macscribe https://podcasts.apple.com/... --model some/alternative-model
+# Transcribe
+macscribe https://youtube.com/watch?v=VIDEO_ID
+macscribe audio.mp3
+macscribe video.mp4 --output transcript.txt
 ```
+
+## Features
+
+- YouTube, Apple Podcasts, X (Twitter) support
+- Local audio (MP3, WAV, FLAC, M4A, OGG, WMA) and video (MP4, MOV, AVI, MKV, WEBM, M4V, WMV)
+- MLX-accelerated Whisper for fast transcription on Apple Silicon
+- Automatic clipboard integration
+- Optional file output
+- Custom model support
 
 ## Requirements
 
-- Python 3.12 or later
-- macOS (uses MLX for hardware acceleration on Apple Silicon)
+- Python 3.12+
+- macOS with Apple Silicon
 
-## Get Started
+## Next Steps
 
-Ready to get started? Check out the [Installation Guide](getting-started/installation.md) or jump straight to the [Quick Start Guide](getting-started/quick-start.md).
+- [Installation Guide](getting-started/installation.md)
+- [Quick Start](getting-started/quick-start.md)
+- [Usage Examples](usage/examples.md)
 
 ## Support
 
-If you encounter any issues or have questions, please:
-
-- Check the documentation sections on the left
-- Visit the [GitHub repository](https://github.com/kasperjunge/macscribe)
-- Open an issue on GitHub
+- [GitHub Repository](https://github.com/kasperjunge/macscribe)
+- [Report Issues](https://github.com/kasperjunge/macscribe/issues)
 
 ## License
 
-Macscribe is licensed under the MIT License. See the [License](license.md) page for details.
+MIT License - [View Details](license.md)

@@ -1,160 +1,91 @@
 # Quick Start
 
-Get up and running with Macscribe in minutes!
-
-## Basic Command Structure
-
-The basic syntax for Macscribe is:
+## Basic Usage
 
 ```bash
 macscribe <INPUT> [OPTIONS]
 ```
 
-Where:
+`<INPUT>`: URL (YouTube, Apple Podcast, X) or local file path
+`[OPTIONS]`: `--model`, `--output`
 
-- `<INPUT>` is either a URL (YouTube, Apple Podcast, X) or a path to a local audio/video file
-- `[OPTIONS]` are optional flags to customize behavior
+## Examples
 
-## Your First Transcription
-
-### Transcribe a YouTube Video
-
-The simplest way to use Macscribe is to transcribe a YouTube video:
+### YouTube Video
 
 ```bash
-macscribe https://www.youtube.com/watch?v=dQw4w9WgXcQ
+macscribe https://youtube.com/watch?v=VIDEO_ID
 ```
 
-What happens:
+Downloads audio, transcribes, copies to clipboard.
 
-1. Macscribe downloads the audio from the YouTube video
-2. The audio is transcribed using the default Whisper model
-3. The transcription is automatically copied to your clipboard
-4. You can paste it anywhere with `Cmd+V` (macOS)
-
-### Transcribe a Local Audio File
-
-You can also transcribe audio files on your computer:
+### Local Audio
 
 ```bash
-macscribe /path/to/your/audio.mp3
+macscribe audio.mp3
 ```
 
-Supported audio formats:
+Supports: MP3, WAV, FLAC, M4A, OGG, WMA
 
-- MP3
-- WAV
-- FLAC
-- M4A
-- OGG
-- WMA
-
-### Transcribe a Local Video File
-
-Macscribe can extract and transcribe audio from video files:
+### Local Video
 
 ```bash
-macscribe /path/to/your/video.mp4
+macscribe video.mp4
 ```
 
-Supported video formats:
+Supports: MP4, MOV, AVI, MKV, WEBM, M4V, WMV
 
-- MP4
-- MOV
-- AVI
-- MKV
-- WEBM
-- M4V
-- WMV
-
-### Transcribe an Apple Podcast Episode
+### Apple Podcast
 
 ```bash
-macscribe https://podcasts.apple.com/us/podcast/example-episode-url
+macscribe https://podcasts.apple.com/us/podcast/...
 ```
 
-### Transcribe from X (Twitter)
+### X (Twitter)
 
 ```bash
-macscribe https://x.com/username/status/1234567890
+macscribe https://x.com/user/status/123
 ```
 
-## Using a Different Model
-
-By default, Macscribe uses `mlx-community/whisper-large-v3-mlx`, but you can specify a different model:
+### Save to File
 
 ```bash
-macscribe https://www.youtube.com/watch?v=dQw4w9WgXcQ --model mlx-community/whisper-medium-mlx
+# Specific file
+macscribe audio.mp3 --output transcript.txt
+
+# Directory (auto-generates filename)
+macscribe audio.mp3 --output ./transcripts/
 ```
 
-### Available Models
+## Custom Models
 
-You can use any MLX-compatible Whisper model from Hugging Face, such as:
-
-- `mlx-community/whisper-large-v3-mlx` (default, most accurate)
-- `mlx-community/whisper-medium-mlx` (good balance)
-- `mlx-community/whisper-small-mlx` (faster, less accurate)
-- `mlx-community/whisper-base-mlx` (fastest, basic accuracy)
-
-## Understanding the Output
-
-When you run Macscribe, you'll see progress messages:
+Default: `mlx-community/whisper-large-v3-mlx`
 
 ```bash
-$ macscribe https://www.youtube.com/watch?v=example
-Downloading audio...
-Transcribing audio...
-Transcription copied to clipboard.
+macscribe video.mp4 --model mlx-community/whisper-medium-mlx
 ```
 
-The transcription is now in your clipboard and ready to paste!
+**Available models** (from Hugging Face):
 
-## Common Use Cases
+- `whisper-large-v3-mlx` - Most accurate
+- `whisper-medium-mlx` - Balanced
+- `whisper-small-mlx` - Faster
+- `whisper-base-mlx` - Fastest
 
-### Meeting Notes
+## What Happens
 
-Record a meeting and transcribe it:
+1. Downloads/processes audio
+2. Transcribes using Whisper
+3. Copies to clipboard
+4. Saves to file (if `--output` specified)
 
-```bash
-macscribe /path/to/meeting-recording.m4a
-```
-
-### YouTube Research
-
-Quickly get transcripts of YouTube videos for research:
-
-```bash
-macscribe https://www.youtube.com/watch?v=educational-video
-```
-
-### Podcast Episodes
-
-Get transcripts of podcast episodes:
-
-```bash
-macscribe https://podcasts.apple.com/us/podcast/episode-url
-```
-
-### Interview Transcription
-
-Transcribe recorded interviews:
-
-```bash
-macscribe /path/to/interview.mp3
-```
-
-## What's Next?
-
-- Learn about [Basic Usage](../usage/basic-usage.md) for more details
-- Explore [Advanced Options](../usage/advanced-options.md) for customization
-- See more [Examples](../usage/examples.md) for specific scenarios
-
-## Getting Help
-
-If you need help at any time, run:
+## Get Help
 
 ```bash
 macscribe --help
 ```
 
-This will show you all available options and commands.
+## Next Steps
+
+- [Examples](../usage/examples.md) - Real-world use cases
+- [Advanced Options](../usage/advanced-options.md) - Customization
