@@ -3,8 +3,15 @@ import sys
 import tempfile
 import pytest
 from pathlib import Path
+from unittest.mock import MagicMock
 
 from pathlib import Path as _Path
+
+# Mock MLX modules before any imports (for non-macOS platforms)
+if sys.platform != "darwin":
+    sys.modules['mlx'] = MagicMock()
+    sys.modules['mlx.core'] = MagicMock()
+    sys.modules['mlx_whisper'] = MagicMock()
 
 # Ensure local src/ is imported before any installed package
 _ROOT = _Path(__file__).resolve().parents[1]
