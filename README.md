@@ -2,6 +2,15 @@
 
 Macscribe is a command-line tool for transcribing audio from YouTube videos, Apple Podcast episodes, and local audio/video files. It downloads audio from URLs or processes local files, transcribes them using a state-of-the-art ML model, and copies the transcription directly to your clipboard for easy use.
 
+## Documentation
+
+Full documentation is available at: **https://kasperjunge.github.io/macscribe/**
+
+- [Installation Guide](https://kasperjunge.github.io/macscribe/getting-started/installation/)
+- [Quick Start](https://kasperjunge.github.io/macscribe/getting-started/quick-start/)
+- [Usage Examples](https://kasperjunge.github.io/macscribe/usage/examples/)
+- [API Reference](https://kasperjunge.github.io/macscribe/api-reference/)
+
 ## Features
 
 - **Multi-Platform Support:** Accepts YouTube, Apple Podcast, and X URLs.
@@ -27,14 +36,16 @@ This will install Macscribe along with its dependencies, including `yt-dlp`, `ml
 Once installed, you can run Macscribe directly from the command line. The basic usage is:
 
 ```bash
-macscribe <INPUT> [--model MODEL]
+macscribe <INPUT> [--model MODEL] [--output OUTPUT]
 ```
 
 **Arguments:**
 
 - `<INPUT>`: Either a URL (YouTube, Apple Podcast, X) or path to a local audio/video file.
-- `--model MODEL`: *(Optional)* The Hugging Face model to use for transcription.  
+- `--model MODEL`: *(Optional)* The Hugging Face model to use for transcription.
   Defaults to `"mlx-community/whisper-large-v3-mlx"` if not specified.
+- `--output OUTPUT` or `-o OUTPUT`: *(Optional)* Path to save the transcript as a text file.
+  Can be a file path (e.g., `transcript.txt`) or a directory (e.g., `./transcripts/`).
 
 **Examples:**
 
@@ -62,7 +73,19 @@ macscribe <INPUT> [--model MODEL]
    macscribe /path/to/your/video.mp4
    ```
 
-After transcription, the resulting text is automatically copied to your clipboard.
+5. Save transcript to a specific file:
+
+   ```bash
+   macscribe https://youtube.com/video --output transcript.txt
+   ```
+
+6. Save transcript to a directory (auto-generates filename):
+
+   ```bash
+   macscribe podcast.mp3 --output ./transcripts/
+   ```
+
+After transcription, the resulting text is automatically copied to your clipboard. If you provide the `--output` flag, the transcript will also be saved to the specified location.
 
 ## Contributing
 

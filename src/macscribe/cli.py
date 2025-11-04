@@ -1,9 +1,11 @@
 import os
 import tempfile
 import typer
+from typing import Optional
 
 from macscribe.downloader import validate_input, prepare_audio
 from macscribe.transcriber import transcribe_audio
+from macscribe.saver import save_transcript_to_file
 
 app = typer.Typer()
 
@@ -13,6 +15,12 @@ def main(
     model: str = typer.Option(
         "mlx-community/whisper-large-v3-mlx",
         help="Hugging Face model to use for transcription. Defaults to the large model."
+    ),
+    output: Optional[str] = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Path to save the transcript as a text file. Can be a directory or a file path."
     )
 ):
     if not validate_input(input_source):
@@ -32,9 +40,18 @@ def main(
 
         try:
             typer.echo("Transcribing audio...")
-            transcribe_audio(audio_file, model)
+            transcript = transcribe_audio(audio_file, model)
         except Exception as e:
             typer.echo(f"Error during transcription: {e}")
             raise typer.Exit(code=1)
 
         typer.echo("Transcription copied to clipboard.")
+
+        # Save transcript to file if output path is specified
+        if output:
+            try:
+                saved_path = save_transcript_to_file(transcript, output, audio_file)
+                typer.echo(f"Transcript saved to: {saved_path}")
+            except Exception as e:
+                typer.echo(f"Error saving transcript: {e}")
+                raise typer.Exit(code=1)

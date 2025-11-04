@@ -294,11 +294,15 @@ Add to your `.bashrc` or `.zshrc`:
 # Quick transcription with medium model
 alias qscribe='macscribe --model mlx-community/whisper-medium-mlx'
 
-# Transcribe and save
+# Transcribe and save to text file
 tsave() {
-    macscribe "$1"
-    pbpaste > "${1%.*}.txt"
+    macscribe "$1" --output "${1%.*}.txt"
     echo "Saved to ${1%.*}.txt"
+}
+
+# Transcribe to specific directory
+tdir() {
+    macscribe "$1" --output "${2:-./transcripts/}"
 }
 ```
 
@@ -312,9 +316,12 @@ AUDIO="test-audio.mp3"
 
 for model in tiny base small medium large; do
     echo "Testing mlx-community/whisper-${model}-mlx"
-    time macscribe "$AUDIO" --model "mlx-community/whisper-${model}-mlx"
-    pbpaste > "transcript-${model}.txt"
+    time macscribe "$AUDIO" --model "mlx-community/whisper-${model}-mlx" \
+         --output "transcript-${model}.txt"
 done
+
+echo "Transcripts saved:"
+ls -lh transcript-*.txt
 ```
 
 ## Next Steps
