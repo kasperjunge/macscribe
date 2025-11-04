@@ -435,27 +435,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-macscribe" class="md-nav__link">
+  <a href="#what-it-does" class="md-nav__link">
     <span class="md-ellipsis">
-      What is Macscribe?
+      What It Does
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Features
+      Quick Start
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
+  <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
-      Quick Example
+      Features
     </span>
   </a>
   
@@ -471,9 +471,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-started" class="md-nav__link">
+  <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
-      Get Started
+      Next Steps
     </span>
   </a>
   
@@ -813,27 +813,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-macscribe" class="md-nav__link">
+  <a href="#what-it-does" class="md-nav__link">
     <span class="md-ellipsis">
-      What is Macscribe?
+      What It Does
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Features
+      Quick Start
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
+  <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
-      Quick Example
+      Features
     </span>
   </a>
   
@@ -849,9 +849,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-started" class="md-nav__link">
+  <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
-      Get Started
+      Next Steps
     </span>
   </a>
   
@@ -895,45 +895,45 @@
 
 
 <h1 id="macscribe">Macscribe</h1>
-<p>Welcome to the Macscribe documentation! Macscribe is a powerful command-line tool for transcribing audio from various sources.</p>
-<h2 id="what-is-macscribe">What is Macscribe?</h2>
-<p>Macscribe is a command-line tool that makes it easy to transcribe audio from YouTube videos, Apple Podcast episodes, X (Twitter) posts, and local audio/video files. It downloads audio from URLs or processes local files, transcribes them using state-of-the-art machine learning models, and copies the transcription directly to your clipboard for easy use.</p>
-<h2 id="key-features">Key Features</h2>
-<ul>
-<li><strong>Multi-Platform Support</strong>: Accepts YouTube, Apple Podcast, and X URLs</li>
-<li><strong>Local File Support</strong>: Transcribes local audio files (MP3, WAV, FLAC, M4A, OGG, WMA) and video files (MP4, MOV, AVI, MKV, WEBM, M4V, WMV)</li>
-<li><strong>Automated Audio Processing</strong>: Downloads high-quality audio from URLs or processes local files directly</li>
-<li><strong>State-of-the-Art Transcription</strong>: Utilizes <code>mlx-whisper</code> for accurate and fast transcription</li>
-<li><strong>Clipboard Integration</strong>: Automatically copies the transcript to your clipboard</li>
-<li><strong>Customizable Models</strong>: Option to specify a different Hugging Face model for transcription</li>
-<li><strong>Simple CLI Interface</strong>: Easy-to-use command-line interface built with Typer</li>
-</ul>
-<h2 id="quick-example">Quick Example</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Transcribe a YouTube video</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>macscribe<span class="w"> </span>https://www.youtube.com/watch?v<span class="o">=</span>dQw4w9WgXcQ
+<p>Transcribe audio from YouTube, podcasts, and local files using Whisper on Apple Silicon.</p>
+<h2 id="what-it-does">What It Does</h2>
+<p>Macscribe transcribes YouTube videos, Apple Podcasts, X posts, and local audio/video files. Transcripts are automatically copied to your clipboard and optionally saved to a file.</p>
+<h2 id="quick-start">Quick Start</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span>macscribe
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Transcribe a local audio file</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>macscribe<span class="w"> </span>/path/to/your/audio.mp3
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Use a custom model</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>macscribe<span class="w"> </span>https://podcasts.apple.com/...<span class="w"> </span>--model<span class="w"> </span>some/alternative-model
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Transcribe</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>macscribe<span class="w"> </span>https://youtube.com/watch?v<span class="o">=</span>VIDEO_ID
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>macscribe<span class="w"> </span>audio.mp3
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>macscribe<span class="w"> </span>video.mp4<span class="w"> </span>--output<span class="w"> </span>transcript.txt
 </code></pre></div>
+<h2 id="features">Features</h2>
+<ul>
+<li>YouTube, Apple Podcasts, X (Twitter) support</li>
+<li>Local audio (MP3, WAV, FLAC, M4A, OGG, WMA) and video (MP4, MOV, AVI, MKV, WEBM, M4V, WMV)</li>
+<li>MLX-accelerated Whisper for fast transcription on Apple Silicon</li>
+<li>Automatic clipboard integration</li>
+<li>Optional file output</li>
+<li>Custom model support</li>
+</ul>
 <h2 id="requirements">Requirements</h2>
 <ul>
-<li>Python 3.12 or later</li>
-<li>macOS (uses MLX for hardware acceleration on Apple Silicon)</li>
+<li>Python 3.12+</li>
+<li>macOS with Apple Silicon</li>
 </ul>
-<h2 id="get-started">Get Started</h2>
-<p>Ready to get started? Check out the <a href="getting-started/installation/">Installation Guide</a> or jump straight to the <a href="getting-started/quick-start/">Quick Start Guide</a>.</p>
-<h2 id="support">Support</h2>
-<p>If you encounter any issues or have questions, please:</p>
+<h2 id="next-steps">Next Steps</h2>
 <ul>
-<li>Check the documentation sections on the left</li>
-<li>Visit the <a href="https://github.com/kasperjunge/macscribe">GitHub repository</a></li>
-<li>Open an issue on GitHub</li>
+<li><a href="getting-started/installation/">Installation Guide</a></li>
+<li><a href="getting-started/quick-start/">Quick Start</a></li>
+<li><a href="usage/examples/">Usage Examples</a></li>
+</ul>
+<h2 id="support">Support</h2>
+<ul>
+<li><a href="https://github.com/kasperjunge/macscribe">GitHub Repository</a></li>
+<li><a href="https://github.com/kasperjunge/macscribe/issues">Report Issues</a></li>
 </ul>
 <h2 id="license">License</h2>
-<p>Macscribe is licensed under the MIT License. See the <a href="license/">License</a> page for details.</p>
+<p>MIT License - <a href="license/">View Details</a></p>
 
 
 
