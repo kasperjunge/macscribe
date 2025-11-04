@@ -1,0 +1,144 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      requires_version_bump: ${{ steps.check.outputs.requires_version_bump }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if version bump required
+        id: check
+        run: |
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Check if any non-docs/README/workflow files were changed
+          REQUIRES_BUMP=false
+          while IFS= read -r file; do
+            # Require version bump if file doesn't start with docs/, .github/workflows/, or is README.md
+            if [[ ! "$file" =~ ^docs/ ]] && [[ ! "$file" =~ ^\.github/workflows/ ]] && [[ ! "$file" =~ ^README\.md$ ]] && [[ ! "$file" =~ ^README\.MD$ ]]; then
+              echo "Code file changed: $file"
+              REQUIRES_BUMP=true
+              break
+            fi
+          done <<< "$CHANGED_FILES"
+
+          if [ "$REQUIRES_BUMP" = true ]; then
+            echo "requires_version_bump=true" >> $GITHUB_OUTPUT
+            echo "✅ Code changed - version bump required"
+          else
+            echo "requires_version_bump=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Only docs/README/workflows changed - version bump not required"
+          fi
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --extra test
+
+      - name: Run tests
+        run: uv run pytest tests/ -v
+
+  version-check:
+    runs-on: ubuntu-latest
+    needs: check-changes
+    if: needs.check-changes.outputs.requires_version_bump == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get current version
+        id: current_version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $VERSION"
+
+      - name: Get base version
+        id: base_version
+        run: |
+          git fetch origin main
+          git checkout origin/main -- pyproject.toml
+          BASE_VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+          git checkout HEAD -- pyproject.toml
+          echo "version=$BASE_VERSION" >> $GITHUB_OUTPUT
+          echo "Base version (main): $BASE_VERSION"
+
+      - name: Compare versions
+        run: |
+          CURRENT="${{ steps.current_version.outputs.version }}"
+          BASE="${{ steps.base_version.outputs.version }}"
+
+          if [ "$CURRENT" = "$BASE" ]; then
+            echo "❌ Version not bumped! Current: $CURRENT, Base (main): $BASE"
+            echo "Code changes require a version bump in pyproject.toml"
+            exit 1
+          else
+            echo "✅ Version bumped from $BASE to $CURRENT"
+          fi
+
+      - name: Check if version already exists on PyPI
+        run: |
+          VERSION="${{ steps.current_version.outputs.version }}"
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/macscribe/$VERSION/json")
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "❌ Version $VERSION already exists on PyPI!"
+            echo "Please use a new version number."
+            exit 1
+          else
+            echo "✅ Version $VERSION is new and can be published"
+          fi
+
+  pr-status:
+    runs-on: ubuntu-latest
+    needs: [check-changes, test, version-check]
+    if: always()
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+
+          if [ "${{ needs.check-changes.outputs.requires_version_bump }}" = "true" ]; then
+            if [ "${{ needs.version-check.result }}" != "success" ]; then
+              echo "❌ Version check failed"
+              exit 1
+            fi
+          fi
+
+          echo "✅ All checks passed"
