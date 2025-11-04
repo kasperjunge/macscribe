@@ -10,8 +10,80 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --extra test
+
+      - name: Run tests
+        run: uv run pytest tests/ -v
+
+  version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get current version
+        id: current_version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $VERSION"
+
+      - name: Get previous version
+        id: previous_version
+        run: |
+          git checkout HEAD~1 pyproject.toml 2>/dev/null || echo "No previous version"
+          PREV_VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/' || echo "0.0.0")
+          echo "version=$PREV_VERSION" >> $GITHUB_OUTPUT
+          echo "Previous version: $PREV_VERSION"
+
+      - name: Compare versions
+        run: |
+          CURRENT="${{ steps.current_version.outputs.version }}"
+          PREVIOUS="${{ steps.previous_version.outputs.version }}"
+
+          if [ "$CURRENT" = "$PREVIOUS" ]; then
+            echo "❌ Version not bumped! Current: $CURRENT, Previous: $PREVIOUS"
+            echo "Please increment the version in pyproject.toml before publishing."
+            exit 1
+          else
+            echo "✅ Version bumped from $PREVIOUS to $CURRENT"
+          fi
+
+      - name: Check if version already exists on PyPI
+        run: |
+          VERSION="${{ steps.current_version.outputs.version }}"
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/macscribe/$VERSION/json")
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "❌ Version $VERSION already exists on PyPI!"
+            echo "Please use a new version number."
+            exit 1
+          else
+            echo "✅ Version $VERSION is new and can be published"
+          fi
+
   publish:
     runs-on: ubuntu-latest
+    needs: [test, version-check]
     environment:
       name: pypi
       url: https://pypi.org/p/macscribe
